@@ -6,8 +6,8 @@ import {
   PrimaryColumn,
 } from "typeorm";
 
-@Entity("users")
-class CategoryCompany {
+@Entity("company_owner")
+class Owner {
   @PrimaryColumn("uuid")
   public id: string;
 
@@ -15,9 +15,20 @@ class CategoryCompany {
   public name: string;
 
   @Column()
-  public image: string;
+  public email: string;
 
   @Column()
+  public cellphone: string;
+
+  @Column()
+  public password: string;
+
+  @Column()
+  public cpf: string;
+
+  @Column()
+  public avatar: string;
+
   @UpdateDateColumn()
   public updated_at: string;
 
@@ -25,4 +36,4 @@ class CategoryCompany {
   public created_at: string;
 }
 
-export { CategoryCompany };
+export { Owner };

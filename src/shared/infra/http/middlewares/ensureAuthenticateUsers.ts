@@ -9,7 +9,7 @@ interface ITokenPayload {
   sub: string;
 }
 
-export function ensureAuthenticate(
+export function ensureAuthenticateOwners(
   request: Request,
   response: Response,
   next: NextFunction
@@ -26,7 +26,7 @@ export function ensureAuthenticate(
   const [, token] = authHeader.split(" ");
 
   try {
-    const decoded = verify(token, jwtConfig.secret);
+    const decoded = verify(token, jwtConfig.users.secret);
 
     const { sub } = decoded as ITokenPayload;
 

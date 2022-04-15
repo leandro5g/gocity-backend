@@ -13,8 +13,14 @@ export class CreateTableOwnerCompany1649256540853
             type: "uuid",
             isPrimary: true,
           },
+
           {
             name: "name",
+            type: "varchar",
+          },
+
+          {
+            name: "password",
             type: "varchar",
           },
 

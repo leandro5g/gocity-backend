@@ -1,4 +1,11 @@
 export const jwtConfig = {
-  secret: "hsadghjasfdghasfdghafsghdfasghfdjasd",
-  expiresIn: "1d",
+  users: {
+    secret: "hsadghjasfdghasfdghafsghdfasghfdjasd",
+    expiresIn: "1d",
+  },
+  owners: {
+    secret:
+      "asdasjdlasjhdjkashdkahskdjhasjkdhjkashdkjashdkjashdjklashkdlhaskldhaskljhdklashd",
+    expiresIn: "1d",
+  },
 };

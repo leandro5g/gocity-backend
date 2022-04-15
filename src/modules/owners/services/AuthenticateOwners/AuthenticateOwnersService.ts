@@ -3,11 +3,10 @@ import { inject, injectable } from "tsyringe";
 import { sign } from "jsonwebtoken";
 import { jwtConfig } from "@config/jwt";
 
-import { User } from "@modules/users/infra/typeorm/entities/User";
-
-import { IUsersRepository } from "@modules/users/repositories/IUsersRepository";
 import { IHashProvider } from "@shared/container/providers/HashProvider/models/IHashProvider";
 import { AppError } from "@shared/errors/AppError";
+import { IOwnersRepository } from "@modules/owners/repositories/IOwnersRepository";
+import { Owner } from "@modules/owners/infra/typeorm/entities/Owner";
 
 interface IRequest {
   email: string;
@@ -15,45 +14,45 @@ interface IRequest {
 }
 
 interface IResponse {
-  user: User;
+  owner: Owner;
   token: string;
 }
 
 @injectable()
-class AuthenticateUserService {
+class AuthenticateOwnersService {
   constructor(
-    @inject("UsersRepository")
-    private usersRepository: IUsersRepository,
+    @inject("OwnersRepository")
+    private ownersRepository: IOwnersRepository,
     @inject("HashProvider")
     private hashProvider: IHashProvider
   ) {}
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
-    const user = await this.usersRepository.findByEmail(email);
+    const owner = await this.ownersRepository.findByEmail(email);
 
-    if (!user) {
+    if (!owner) {
       throw new AppError("Combination password/email does not match");
     }
 
     const checkPassword = await this.hashProvider.compareHash(
       password,
-      user.password
+      owner.password
     );
 
     if (!checkPassword) {
       throw new AppError("Combination password/email does not match");
     }
 
-    const token = sign({}, jwtConfig.users.secret, {
-      subject: user.id,
-      expiresIn: jwtConfig.users.expiresIn,
+    const token = sign({}, jwtConfig.owners.secret, {
+      subject: owner.id,
+      expiresIn: jwtConfig.owners.expiresIn,
     });
 
     return {
-      user,
+      owner,
       token,
     };
   }
 }
 
-export { AuthenticateUserService };
+export { AuthenticateOwnersService };

@@ -1,4 +1,5 @@
 import { AppError } from "@shared/errors/AppError";
+import { SignUpOwnerError } from "@shared/errors/SignUpOwnerError";
 import { Request, Response, NextFunction } from "express";
 
 export function globalError(
@@ -13,6 +14,14 @@ export function globalError(
     return response.status(err.statusCode).json({
       status: "error",
       message: err.message,
+    });
+  }
+
+  if (err instanceof SignUpOwnerError) {
+    return response.status(400).json({
+      status: "error",
+      message: err.message,
+      already_Error: err.alreadyError,
     });
   }
 
